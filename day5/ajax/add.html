@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .dome {
+            width: 100%;
+            height: 50px;
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 5px;
+            box-sizing: border-box;
+            /* color: #; */
+            font-size: 18px;
+        }
+
+        button {
+            width: 50px;
+            height: 50px;
+        }
+
+        img {
+            width: 200px;
+            height: 200px;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="dome">
+    </div>
+
+</body>
+<template id="module">
+    <div>
+        <div class="dome">
+            <button @click="gets">{{title.get}}</button>
+            <button @click="posts">{{title.post}}</button>
+            <button @click="deletes">{{title.delete}}</button>
+            <button @click="patchs">{{title.patch}}</button>
+        </div>
+    </div>
+</template>
+<script src="../vue.js">
+</script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    Vue.component('headers', {
+        props: ['title'],
+        data() {
+            return {
+
+                data2: '123',
+
+            }
+        },
+        template: '#module',
+        methods: {
+            gets() {
+                axios.get('http://localhost:3848/addlist', {
+                    params: { marketno: '3' }
+                }).then(resp => {
+                    this.data2 = resp.data;
+                }).catch(err => {
+                    console.log(err);
+                })
+            },
+            posts() {
+                axios.post('http://localhost:3848/addlist', {
+                    marketno: '5',
+                }).then(resp => {
+                    console.log(resp.data);
+                }).catch(err => {
+                    console.log(err);
+                })
+            },
+            deletes() {
+                axios.delete('http://localhost:3848/addlist', {
+                    data: {
+                        marketno: '5'
+                    },
+                }).then(resp => {
+                    console.log(resp.data);
+                }).catch(err => {
+                    console.log(err);
+                })
+            },
+            patchs() {
+                axios.patch('http://localhost:3848/addlist', {
+                    data: {
+                        key1: "marketno",
+                        value1: "3",
+                        key2: "fsgzfzf",
+                        value2: "xtxgfxg",
+                    },
+                }).then(resp => {
+                    console.log(resp.data);
+                }).catch(err => {
+                    console.log(err);
+                })
+            }
+        },
+    });
+    let vm = new Vue({
+        el: '#dome',
+        data: {
+            ajaxs: {
+                get: "get",
+                post: "post",
+                delete: "delete",
+                patch: "patch",
+                reptile: "python",
+                num: 0,
+                arr: [],
+            }
+        },
+        template: `
+            <div>
+                <headers :title="ajaxs">
+                </headers>
+                <input type="text" v-model="ajaxs.num" placeholder="你要爬几条数据">
+                <button @click="reptile(ajaxs.num)" >{{ajaxs.reptile}}</button>
+                <img v-for="(item,index) in ajaxs.arr" :src="item" alt="">
+            </div>
+        `,
+        methods: {
+            reptile(num) {
+                axios.post('http://localhost:3848/python', {
+                    num,
+                }).then(resp => {
+                    this.ajaxs.arr = resp.data;
+                    console.log(this.ajaxs.arr.length);
+                }).catch(err => {
+                    console.log(err);
+                })
+            }
+        },
+    })
+</script>
+
+</html>
