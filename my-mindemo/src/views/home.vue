@@ -1,7 +1,14 @@
 <template>
-  <div>ljssx</div>
+  <div>
+    <heades/>
+  </div>
 </template>
 <script lang="ts">
 import Vue from "vue";
-export default Vue.extend({});
+import heades from "../components/heder.vue";
+export default Vue.extend({
+  components: {
+    heades
+  }
+});
 </script>
