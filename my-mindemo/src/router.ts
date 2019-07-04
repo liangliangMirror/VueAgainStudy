@@ -4,17 +4,25 @@ import xxx from './components/xxx.vue';
 import home from './views/home.vue'
 Vue.use(Router);
 export default new Router({
-    mode: 'history',
+    mode: 'hash',
     base: process.env.BASE_URL,
     routes: [
         {
-            path: '/xxx',
-            name: 'xxx',
-            component: xxx,
-        }, {
             path: '/',
             name: 'home',
             component: home,
+            children: [
+                {
+                    path: '/xxx',
+                    name: 'xxx',
+                    component: xxx,
+                },
+                {
+                    path: '/',
+                    redirect: '/xxx',
+                    name: 'xxx'
+                }
+            ]
         }
     ]
 })
